@@ -307,7 +307,6 @@ impl Deref for AlgoResponse {
     }
 }
 
-
 // We need our own TryFrom trait because we can't implement
 // the conversions from AlgoIo to any generic DeserializeOwned type until specialization
 #[doc(hidden)]
@@ -340,7 +339,6 @@ impl TryFrom<AlgoIo> for ByteVec {
         }
     }
 }
-
 
 impl AlgoResponse {
     /// If the algorithm output is JSON, decode it into a particular type

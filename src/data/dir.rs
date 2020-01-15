@@ -450,5 +450,4 @@ mod tests {
         let acl: DataAcl = ReadAcl::MyAlgorithms.into();
         assert_eq!(acl.read, vec!["algo://.my/*".to_string()]);
     }
-
 }

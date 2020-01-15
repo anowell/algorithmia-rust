@@ -195,7 +195,10 @@ where
     }
 }
 
-pub fn load_and_run<F, LOAD, IN, OUT, STATE, E, E2, E3>(load: LOAD, mut apply: F) -> Result<(), Box<Error>>
+pub fn load_and_run<F, LOAD, IN, OUT, STATE, E, E2, E3>(
+    load: LOAD,
+    mut apply: F,
+) -> Result<(), Box<Error>>
 where
     F: FnMut(IN, &mut STATE) -> Result<OUT, E>,
     LOAD: FnOnce() -> Result<STATE, E3>,

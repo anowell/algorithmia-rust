@@ -4,11 +4,11 @@
 use std::str::FromStr;
 use std::sync::Arc;
 
-use headers_ext::{Authorization, authorization::Credentials, HeaderMapExt, UserAgent};
+use headers_ext::{authorization::Credentials, Authorization, HeaderMapExt, UserAgent};
 use http::header::HeaderMap;
 use http::header::HeaderValue;
-use reqwest::{Client, IntoUrl, Method, RequestBuilder, Url};
 pub use reqwest::Body;
+use reqwest::{Client, IntoUrl, Method, RequestBuilder, Url};
 
 use crate::error::{Error, ResultExt};
 

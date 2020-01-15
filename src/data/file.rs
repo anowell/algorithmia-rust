@@ -25,7 +25,7 @@ pub struct FileData {
     pub size: u64,
     /// Last modified timestamp
     pub last_modified: DateTime<Utc>,
-    data: Box<Read>,
+    data: Box<dyn Read>,
 }
 
 impl Read for FileData {
