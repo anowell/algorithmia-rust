@@ -1,7 +1,7 @@
 //! Error types
 use crate::client::header::{lossy_header, X_ERROR_MESSAGE};
 use backtrace::Backtrace;
-use reqwest::Response;
+use reqwest::blocking::Response;
 use serde::{Deserialize, Serialize};
 use serde_json;
 use std::error::Error as StdError;
@@ -42,7 +42,7 @@ pub(crate) enum ErrorKind {
 }
 
 impl Display for Error {
-    fn fmt(&self, f: &mut fmt::Formatter) -> fmt::Result {
+    fn fmt(&self, f: &mut fmt::Formatter<'_>) -> fmt::Result {
         match &self.kind {
             ErrorKind::Http(err, _) => match err.status() {
                 Some(status) => write!(f, "{}: {}", status, self.ctx),
@@ -150,7 +150,7 @@ pub struct ApiError {
 }
 
 impl Display for ApiError {
-    fn fmt(&self, f: &mut fmt::Formatter) -> fmt::Result {
+    fn fmt(&self, f: &mut fmt::Formatter<'_>) -> fmt::Result {
         if let Some(error_type) = &self.error_type {
             write!(f, "{}: ", error_type)?;
         }
@@ -248,14 +248,16 @@ impl Error {
     }
 }
 
-pub(crate) fn process_http_response(mut resp: Response) -> Result<Response, Error> {
+pub(crate) fn process_http_response(resp: Response) -> Result<Response, Error> {
     let status = resp.status();
     if status.is_success() {
         Ok(resp)
     } else {
+        let err_status = resp.error_for_status_ref().unwrap_err();
+        let x_error_msg = resp.headers().get(X_ERROR_MESSAGE).map(lossy_header);
         let api_err = match resp.json::<ApiErrorResponse>() {
             Ok(err_res) => Some(err_res.error),
-            Err(_) => match resp.headers().get(X_ERROR_MESSAGE).map(lossy_header) {
+            Err(_) => match x_error_msg {
                 Some(message) => Some(ApiError {
                     message,
                     error_type: None,
@@ -265,8 +267,8 @@ pub(crate) fn process_http_response(mut resp: Response) -> Result<Response, Erro
             },
         };
 
-        Response::error_for_status(resp).map_err(|e| Error {
-            kind: ErrorKind::Http(e, api_err),
+        Err(Error {
+            kind: ErrorKind::Http(err_status, api_err),
             ctx: String::new(),
         })
     }

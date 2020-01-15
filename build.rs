@@ -1,5 +1,3 @@
-extern crate rustc_version;
-
 use std::fs::File;
 use std::io::Write;
 

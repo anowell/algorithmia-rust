@@ -9,7 +9,7 @@ pub use self::path::*;
 
 use crate::error::{err_msg, Error};
 use chrono::{DateTime, NaiveDateTime, TimeZone, Utc};
-use headers_ext::{ContentLength, Date, HeaderMapExt};
+use headers::{ContentLength, Date, HeaderMapExt};
 use http::header::HeaderMap;
 use std::ops::Deref;
 use std::time::{SystemTime, UNIX_EPOCH};

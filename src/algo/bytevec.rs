@@ -30,7 +30,7 @@ impl ByteVec {
 }
 
 impl Debug for ByteVec {
-    fn fmt(&self, f: &mut fmt::Formatter) -> fmt::Result {
+    fn fmt(&self, f: &mut fmt::Formatter<'_>) -> fmt::Result {
         Debug::fmt(&self.bytes, f)
     }
 }

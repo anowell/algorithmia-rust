@@ -1,4 +1,4 @@
-extern crate algorithmia;
+
 
 use algorithmia::data::ReadAcl;
 use algorithmia::Algorithmia;
@@ -14,7 +14,7 @@ fn print_cause_chain(err: &dyn Error) {
     }
 }
 
-fn main() -> Result<(), Box<Error>> {
+fn main() -> Result<(), Box<dyn Error>> {
     let mut args = env::args();
     args.next(); // discard args[0]
     let path = match args.next() {

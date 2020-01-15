@@ -5,7 +5,7 @@ use std::error::Error;
 type Dict = HashMap<char, u32>;
 
 // This is a simple, stateful char counter
-fn apply(input: String, shared_state: &mut Dict) -> Result<Dict, Box<Error>> {
+fn apply(input: String, shared_state: &mut Dict) -> Result<Dict, Box<dyn Error>> {
     for c in input.chars() {
         let counter = shared_state.entry(c).or_insert(0);
         *counter += 1;

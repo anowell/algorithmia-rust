@@ -36,7 +36,7 @@ pub mod handler;
 
 use crate::client::ApiAuth;
 use crate::error::Error;
-pub use reqwest::Body;
+pub use reqwest::blocking::Body;
 pub use reqwest::{IntoUrl, Url};
 
 /// Reexports of the most common types and traits
@@ -44,7 +44,6 @@ pub mod prelude {
     pub use crate::algo::AlgoIo;
     pub use crate::data::HasDataPath;
     pub use crate::Algorithmia;
-    pub use serde_json::Value;
 
     #[cfg(feature = "handler")]
     pub use crate::handler;

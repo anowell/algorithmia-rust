@@ -1,6 +1,3 @@
-extern crate algorithmia;
-extern crate serde_json;
-
 use algorithmia::algo::AlgoResponse;
 use algorithmia::Algorithmia;
 use std::collections::HashMap;
@@ -33,7 +30,7 @@ impl<'a> RouteMap<'a> {
         self,
         start: &'a str,
         end: &'a str,
-    ) -> Result<AlgoResponse, Box<Error>> {
+    ) -> Result<AlgoResponse, Box<dyn Error>> {
         let api_key = match env::var("ALGORITHMIA_API_KEY") {
             Ok(key) => key,
             Err(e) => {
@@ -46,7 +43,7 @@ impl<'a> RouteMap<'a> {
         println!("Making request to: {}", dijkstra.to_url().unwrap());
 
         // Declaring type explicitly to enforce valid input types during build
-        let input_data: DijkstraInput = (self.map, start, end);
+        let input_data: DijkstraInput<'_> = (self.map, start, end);
         // println!("Input: {:?}", input_data);
         println!(
             "Input:\n{}",
@@ -57,7 +54,7 @@ impl<'a> RouteMap<'a> {
     }
 }
 
-fn main() -> Result<(), Box<Error>> {
+fn main() -> Result<(), Box<dyn Error>> {
     let mut args = env::args();
     args.next(); // discard args[0]
     let start = args.next().unwrap_or_else(|| "a".to_string());

@@ -30,13 +30,13 @@ use serde::{Deserialize, Serialize};
 use serde_json::{self, json, Value};
 
 use base64;
-use headers_ext::ContentType;
+use headers::ContentType;
 use mime::{self, Mime};
 #[doc(hidden)]
-pub use reqwest::Response;
+pub use reqwest::blocking::Response;
 use reqwest::Url;
 
-use headers_ext::HeaderMapExt;
+use headers::HeaderMapExt;
 use http::header::HeaderMap;
 use std::collections::HashMap;
 use std::fmt;
@@ -438,13 +438,13 @@ impl FromStr for AlgoResponse {
 }
 
 impl fmt::Display for AlgoUri {
-    fn fmt(&self, f: &mut fmt::Formatter) -> fmt::Result {
+    fn fmt(&self, f: &mut fmt::Formatter<'_>) -> fmt::Result {
         f.write_str(&self.path)
     }
 }
 
 impl fmt::Display for AlgoResponse {
-    fn fmt(&self, f: &mut fmt::Formatter) -> fmt::Result {
+    fn fmt(&self, f: &mut fmt::Formatter<'_>) -> fmt::Result {
         match &self.result.data {
             AlgoData::Text(s) => f.write_str(s),
             AlgoData::Json(s) => f.write_str(&s.to_string()),

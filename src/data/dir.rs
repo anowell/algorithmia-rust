@@ -191,7 +191,7 @@ fn get_directory(dir: &DataDir, marker: Option<String>) -> Result<DirectoryShow,
         url.query_pairs_mut().append_pair("marker", m);
     }
 
-    let mut res = dir
+    let res = dir
         .client
         .get(url)
         .send()
@@ -252,7 +252,7 @@ impl DataDir {
     /// };
     /// # Ok::<(), Box<std::error::Error>>(())
     /// ```
-    pub fn list(&self) -> DirectoryListing {
+    pub fn list(&self) -> DirectoryListing<'_> {
         DirectoryListing::new(self)
     }
 
@@ -329,7 +329,7 @@ impl DataDir {
         }
 
         // Parse response
-        let mut res = self
+        let res = self
             .client
             .delete(url)
             .send()

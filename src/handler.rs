@@ -163,8 +163,8 @@ where
     F: FnMut(IN) -> Result<OUT, E>,
     IN: TryFrom<AlgoIo, Error = E2>,
     OUT: Into<AlgoIo>,
-    E: Into<Box<Error>>,
-    E2: Into<Box<Error>>,
+    E: Into<Box<dyn Error>>,
+    E2: Into<Box<dyn Error>>,
 {
     println!("PIPE_INIT_COMPLETE");
     flush_std_pipes();
@@ -198,15 +198,15 @@ where
 pub fn load_and_run<F, LOAD, IN, OUT, STATE, E, E2, E3>(
     load: LOAD,
     mut apply: F,
-) -> Result<(), Box<Error>>
+) -> Result<(), Box<dyn Error>>
 where
     F: FnMut(IN, &mut STATE) -> Result<OUT, E>,
     LOAD: FnOnce() -> Result<STATE, E3>,
     IN: TryFrom<AlgoIo, Error = E2>,
     OUT: Into<AlgoIo>,
-    E: Into<Box<Error>>,
-    E2: Into<Box<Error>>,
-    E3: Into<Box<Error>>,
+    E: Into<Box<dyn Error>>,
+    E2: Into<Box<dyn Error>>,
+    E3: Into<Box<dyn Error>>,
 {
     let mut state = load().map_err(|err| err.into())?;
     run(|input| apply(input, &mut state));
