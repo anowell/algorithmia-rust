@@ -1,5 +1,3 @@
-
-
 use algorithmia::data::ReadAcl;
 use algorithmia::Algorithmia;
 use std::env;

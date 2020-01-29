@@ -1,6 +1,6 @@
 [package]
 name = "algorithmia"
-version = "3.0.0-beta.2"
+version = "3.0.0-beta.3"
 license = "MIT"
 authors = ["Anthony Nowell <anthony@algorithmia.com>"]
 description = "Client for calling algorithms and managing data hosted using Algorithmia"

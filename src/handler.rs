@@ -114,7 +114,7 @@ impl AlgoFailure {
 /// #[derive(Serialize)]
 /// struct Output { titles: Vec<String> }
 ///
-/// fn apply(input: Input) -> Result<Output, Box<Error>> {
+/// fn apply(input: Input) -> Result<Output, Box<dyn Error>> {
 ///     unimplemented!();
 /// }
 ///
