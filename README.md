@@ -11,7 +11,7 @@ A rust client library for the Algorithmia API.
 ## Getting started
 
 The Algorithmia Rust client is published to [crates.io](https://crates.io/crates/algorithmia).
-Add `algorithmia = "2.0.0"` to the dependencies in your `Cargo.toml` and run `cargo install`.
+Add `algorithmia = "3.0"` to the dependencies in your `Cargo.toml` and run `cargo install`.
 
 Instantiate an Algorithmia client using your API key:
 

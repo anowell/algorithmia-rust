@@ -64,9 +64,8 @@ impl HttpClient {
             base_url: base_url.into_url().context("Invalid base URL")?,
             inner_client: Self::inner_client(),
             user_agent: format!(
-                "algorithmia-rust/{} (Rust {}",
+                "algorithmia-rust/{}",
                 option_env!("CARGO_PKG_VERSION").unwrap_or("unknown"),
-                crate::version::RUSTC_VERSION
             ),
         })
     }

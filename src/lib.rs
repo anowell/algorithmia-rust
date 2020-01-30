@@ -50,7 +50,6 @@ pub mod prelude {
 }
 
 mod client;
-mod version;
 
 const DEFAULT_API_BASE_URL: &'static str = "https://api.algorithmia.com";
 
