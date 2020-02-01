@@ -1,8 +1,7 @@
-use super::{parse_data_uri, parse_headers};
+use super::{algo_epoch, parse_data_uri, parse_headers};
 use crate::client::HttpClient;
 use crate::data::*;
 use crate::error::{process_http_response, Error, ResultExt};
-use chrono::{TimeZone, Utc};
 
 /// Algorithmia data object (file or directory)
 pub struct DataObject {
@@ -84,16 +83,11 @@ impl DataObject {
 
         match metadata.data_type {
             DataType::Dir => Ok(DataItem::Dir(DataDirItem { dir: self.into() })),
-            DataType::File => {
-                Ok(DataItem::File(DataFileItem {
-                    size: metadata.content_length.unwrap_or(0),
-                    last_modified: metadata
-                        .last_modified
-                        // Fallback to Algorithmia public launch date :-)
-                        .unwrap_or_else(|| Utc.ymd(2015, 3, 14).and_hms(8, 0, 0)),
-                    file: self.into(),
-                }))
-            }
+            DataType::File => Ok(DataItem::File(DataFileItem {
+                size: metadata.content_length.unwrap_or(0),
+                last_modified: metadata.last_modified.unwrap_or_else(algo_epoch),
+                file: self.into(),
+            })),
         }
     }
 }

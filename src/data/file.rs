@@ -11,12 +11,12 @@
 //! # Ok::<(), Box<std::error::Error>>(())
 //! ```
 
-use super::{parse_data_uri, parse_headers};
+use super::{algo_epoch, parse_data_uri, parse_headers};
 use crate::client::HttpClient;
 use crate::data::{DataType, HasDataPath};
 use crate::error::{process_http_response, Error, ResultExt};
 use crate::Body;
-use chrono::{DateTime, TimeZone, Utc};
+use chrono::{DateTime, Utc};
 use std::io::{self, Read};
 
 /// Response and reader when downloading a `DataFile`
@@ -144,9 +144,7 @@ impl DataFile {
 
         Ok(FileData {
             size: metadata.content_length.unwrap_or(0),
-            last_modified: metadata
-                .last_modified
-                .unwrap_or_else(|| Utc.ymd(2015, 3, 14).and_hms(8, 0, 0)),
+            last_modified: metadata.last_modified.unwrap_or_else(algo_epoch),
             data: Box::new(res),
         })
     }

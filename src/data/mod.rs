@@ -8,11 +8,11 @@ pub use self::object::*;
 pub use self::path::*;
 
 use crate::error::{err_msg, Error};
-use chrono::{DateTime, NaiveDateTime, TimeZone, Utc};
+use chrono::{DateTime, TimeZone, Utc};
 use headers::{ContentLength, Date, HeaderMapExt};
 use http::header::HeaderMap;
 use std::ops::Deref;
-use std::time::{SystemTime, UNIX_EPOCH};
+use std::time::SystemTime;
 
 mod dir;
 mod file;
@@ -85,12 +85,7 @@ fn parse_headers(headers: &HeaderMap) -> Result<HeaderData, Error> {
     let content_length = headers.typed_get::<ContentLength>().map(|c| c.0);
     let last_modified = headers.typed_get::<Date>().map(|d| {
         let time = SystemTime::from(d);
-        let ts = time
-            .duration_since(UNIX_EPOCH)
-            .expect("date header predates unix epoch");
-        let naive_datetime =
-            NaiveDateTime::from_timestamp(ts.as_secs() as i64, ts.subsec_nanos() as u32);
-        Utc.from_utc_datetime(&naive_datetime)
+        DateTime::<Utc>::from(time)
     });
 
     Ok(HeaderData {
@@ -106,6 +101,11 @@ fn parse_data_uri(data_uri: &str) -> String {
         p if p.starts_with('/') => format!("data/{}", &p[1..]),
         p => format!("data/{}", p),
     }
+}
+
+fn algo_epoch() -> DateTime<Utc> {
+    // Lore: Algorithmia.com public launch date (midnight PST)
+    Utc.ymd(2015, 3, 14).and_hms(8, 0, 0)
 }
 
 #[cfg(test)]
